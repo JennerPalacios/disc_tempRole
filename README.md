@@ -1,3 +1,8 @@
+# NO SQLITE SUPPORT ATM #
+
+This requires mySQL or any other **Database** server...
+
+
 # REQUIREMENTS:
 
 1) Node.js (https://nodejs.org/en/download/ `ver 8.4+`)
