@@ -1,0 +1,17 @@
+{
+	"messageToExecuter": {
+		"memberNotMention": "⚠ Se te olvidó `@mencionar` la persona a quién comprobar, añadir, or remover rol... %member%",
+		"noRolesFound": "⚠ %mentions% **NO** tiene ningún `rol temporal`, %member%",
+		"rolesFoundTitle": "✅ Roles Temporales de %mentions%:\n",
+		"rolesFoundList": "**%roleName%**, termina: `%endDate%`, añadidoPor: %addedBy%, el: `%addedDate%`\n"
+		
+	},
+	"messageToMember": {
+		"reminder": "⚠ %member%, you will **lose** your role: **%roleName%** in `%daysAmount% days`. Please contact %serverOwner% if you wish to renew your **temporary role**.",
+		"roleLost": "⚠ %member%, you have **lost** your role: **%roleName%** - your **temporary** access has __EXPIRED__ 😭 \nPlease contact %serverOwner% if you wish to renew your **temporary role**."
+		
+	},
+	"messageToChannel": {
+		"roleLost": "⚠ %member% have **lost** their role: **%roleName%** - their **temporary** access has __EXPIRED__ 😭"
+	}
+}

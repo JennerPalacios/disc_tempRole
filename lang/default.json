@@ -1,0 +1,24 @@
+{
+	"messageToExecuter": {
+		"memberNotMention": "⚠ Please `@mention` a person you want me to check, add, or remove roles from... %member%",
+		"noRolesFound": "⚠ %mentions% does **NOT** have any `temporary roles`, %member%",
+		"rolesFoundTitle": "✅ %mentions%'s TemporaryRole(s):\n",
+		"rolesFoundList": "**%roleName%**, ends: `%endDate%`, addedBy: `%addedBy%`, on: `%addedDate%`\n",
+		"roleRemoveNotMention": "⛔ %member%, you forgot to include what role to **remove** from %mentions%...",
+		"roleMemberNotInDB": "⛔ %mentions% with role: `%roleName%` is __NOT__ in my `DataBase`, %member%",
+		"daysNotMention": "⛔ %member%, you forgot to include how **many** days do you want %mentions% to have this role...",
+		"roleAddNotMention": "⛔ %member%, you forgot to include what __role__ to **temporary** assign to %mentions%...",
+		"roleNotFoundInServer": "⛔ I couldn't find such role in the server, %member%! Please try searching for it first!"
+	},
+	"messageToMember": {
+		"reminder": "⚠ %member%, you will **lose** your role: **%roleName%** in `%daysAmount% days`. Please contact %serverOwner% if you wish to renew your **temporary role**.",
+		"roleLost": "⚠ %member%, you have **lost** your role: **%roleName%** - your **temporary** access has __EXPIRED__ 😭 \nPlease contact %serverOwner% if you wish to renew your **temporary role**."
+		
+	},
+	"messageToChannel": {
+		"roleLost": "⚠ %member% have **lost** their role: **%roleName%** - their **temporary** access has __EXPIRED__ 😭",
+		"roleRemoved": "⚠ %mentions% have **lost** their role: **%roleName%** and has been removed from my `DataBase`, %member%",
+		"roleExtended": "🎉 %mentions%'s **temporary** role: **%roleName%** has been extended by **%days%** more days. They will lose this role on: `%endDate%`",
+		"roleAssigned": "🎉 %mentions% has been given a **temporary** role: **%roleName%**, enjoy! They will lose this role on: `%endDate%`"
+	}
+}

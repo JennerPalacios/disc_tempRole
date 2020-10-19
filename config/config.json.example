@@ -1,0 +1,21 @@
+{
+	"myDBserver": {
+		"enabled": "yes",
+		"host": "localhost",
+		"user": "root",
+		"password": "password",
+		"charset": "utf8mb4"
+	},
+    "token": "<YOUR_BOT'S_TOKEN>",
+    "botID": "<YOUR_BOT'S_ID>",
+	"ownerID": "<YOUR_PERSONAL_ID>",
+	"cmdPrefix": "!",
+	"language": "default",
+	"dateFormat": "mm/dd/yyyy",
+	"serverName": "<NAME_OF_YOUR_SERVER>",
+	"serverID": "<ID_OF_YOUR_SERVER>",
+	"adminRoleName": "Admin",
+	"modRoleName": "Moderator",
+	"remindAtDays": "4",
+	"logChannelID": "<CHANNEL_WHERE_TO_POST>"
+}
