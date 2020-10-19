@@ -1,4 +1,5 @@
-## WARNING ##
+# WARNING #
+
 **DO NOT** modify or delete `default.json`!
 
 Copy the file and use it as template; create your own language/slang/translation.
@@ -11,3 +12,8 @@ for instance:
 
 ```
 ▲ This line does not have `%mentions%` data or tag to display; using that tage will result in **plaintext** display on discord.
+
+
+## NOTICE ##
+
+Translations can be incomplete; if a setting is missing in your file, it will use the `default.json` file to fill up missing data.
