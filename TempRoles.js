@@ -106,7 +106,6 @@ function timeStamp(type){
 // DATABASE TIMER FOR TEMPORARY ROLES
 //
 setInterval(function(){
-	console.info("Checking database");//
 	let timeNow=new Date().getTime(),dbTime="",daysLeft="",logginChannel="",member="",translation="yes";
 	if(myDB!=="disabled"){
 		myDB.query(`SELECT * FROM TempRole_bot.temporaryRoles;`,(error,results)=>{
