@@ -195,7 +195,7 @@ module.exports={
 						return;
 					}
 					
-					if(args[0]==="remove"){
+					if(args[0].startsWith("r") || args[0].startsWith("d")){
 						let roleSearched=ARGS.slice(2).join(" ");
 						if(args.length<3){
 							if(botLanguage){
