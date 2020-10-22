@@ -106,6 +106,7 @@ function timeStamp(type){
 // DATABASE TIMER FOR TEMPORARY ROLES
 //
 setInterval(function(){
+	console.info("Checking database");//
 	let timeNow=new Date().getTime(),dbTime="",daysLeft="",logginChannel="",member="",translation="yes";
 	if(myDB!=="disabled"){
 		myDB.query(`SELECT * FROM TempRole_bot.temporaryRoles;`,(error,results)=>{
@@ -120,9 +121,8 @@ setInterval(function(){
 						dbTime=rows[rowNumber].endDate; daysLeft=(dbTime*1)-(timeNow*1);
 						member=bot.guilds.get(rows[rowNumber].guildID).members.get(rows[rowNumber].userID) || "notFound";
 						if(botConfig.remindAtDays){
-							let daysRemaining=Math.ceil(daysLeft/86400000), remindAt=(botConfig.remindAtDays*1), dayORdays=" day";
-							if(botConfig.remindAtDays>1){dayORdays=" days"}
-							if(daysRemaining===remindAt){
+							let daysRemaining=Math.ceil(daysLeft/86400000), remindAt=(botConfig.remindAtDays*1);
+							if(daysRemaining<=remindAt){
 								myDB.query(`UPDATE TempRole_bot.temporaryRoles SET reminderSent=? WHERE userID="${rows[rowNumber].userID}" AND temporaryRole="${rows[rowNumber].temporaryRole}";`,
 									["yes"],error=>{
 										if(error){console.info(timeStamp()+" "+cc.hlred+" ERROR "+cc.reset+" Could not "+cc.yellow+"UPDATE"+cc.cyan+" temporaryRoles"+cc.reset+" table\nRAW: "+error);}
@@ -136,23 +136,23 @@ setInterval(function(){
 												if(botLanguage.messageToMember.reminder){
 													member.send(
 														botLanguage.messageToMember.reminder.replace("%member%","<@"+rows[rowNumber].userID+">")
-															.replace("%daysAmount%",rows[rowNumber].temporaryRole)
-															.replace("%daysAmount%",daysRemaining+dayORdays)
-															.replace("%botOwner%","<@"+botConfig.ownerID+">")
+															.replace("%roleName%",rows[rowNumber].temporaryRole)
+															.replace("%daysAmount%",daysRemaining)
+															.replace("%serverOwner%","<@"+botConfig.ownerID+">")
 													)
 													.catch(error=>console.info(timeStamp()+" "+cc.hlred+" ERROR "+cc.reset+" "+error.message+" | Member has disabled DMs, blocked me, or is no longer in server"))
 												}
-												else{translation="no"}
+												else{translation="no";console.info("1. translation=no")}
 											}
-											else{translation="no"}
+											else{translation="no";console.info("2. translation=no")}
 										}
-										else{translation="no"}
+										else{translation="no";console.info("3. translation=no")}
 										if(translation==="no"){
 											member.send(
 												botDefaultLanguage.messageToMember.reminder.replace("%member%","<@"+rows[rowNumber].userID+">")
 													.replace("%roleName%",rows[rowNumber].temporaryRole)
-													.replace("%daysAmount%",daysRemaining+dayORdays)
-													.replace("%botOwner%","<@"+botConfig.ownerID+">")
+													.replace("%daysAmount%",daysRemaining)
+													.replace("%serverOwner%","<@"+botConfig.ownerID+">")
 											)
 											.catch(error=>console.info(timeStamp()+" "+cc.hlred+" ERROR "+cc.reset+" "+error.message+" | Member has disabled DMs, blocked me, or is no longer in server"))
 										}
@@ -207,7 +207,7 @@ setInterval(function(){
 												member.send(
 													botLanguage.messageToMember.roleLost.replace("%member%","<@"+rows[rowNumber].userID+">")
 														.replace("%roleName%",rows[rowNumber].temporaryRole)
-														.replace("%botOwner%","<@"+botConfig.ownerID+">")
+														.replace("%serverOwner%","<@"+botConfig.ownerID+">")
 												)
 												.catch(error=>console.info(timeStamp()+" "+cc.hlred+" ERROR "+cc.reset+" "+error.message+" | Member has disabled DMs, blocked me, or is no longer in server"))
 											}
@@ -220,7 +220,7 @@ setInterval(function(){
 										member.send(
 											botDefaultLanguage.messageToMember.roleLost.replace("%member%","<@"+rows[rowNumber].userID+">")
 												.replace("%roleName%",rows[rowNumber].temporaryRole)
-												.replace("%botOwner%","<@"+botConfig.ownerID+">")
+												.replace("%serverOwner%","<@"+botConfig.ownerID+">")
 										)
 										.catch(error=>console.info(timeStamp()+" "+cc.hlred+" ERROR "+cc.reset+" "+error.message+" | Member has disabled DMs, blocked me, or is no longer in server"))
 									}
