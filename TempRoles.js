@@ -28,12 +28,29 @@ const Discord=require("discord.js");
 const bot=new Discord.Client({fetchAllMembers: true}); bot.commands=new Discord.Collection();
 
 
+
+//
+// SHORTEN JSON DATA AND CONSOLE COLORS
+//
+const cc={"reset":"\x1b[0m","ul":"\x1b[4m","lred":"\x1b[91m","red":"\x1b[31m","lgreen":"\x1b[92m","green":"\x1b[32m","lyellow":"\x1b[93m","yellow":"\x1b[33m",
+		"lblue":"\x1b[94m","blue":"\x1b[34m","lcyan":"\x1b[96m","cyan":"\x1b[36m","pink":"\x1b[95m","purple":"\x1b[35m","bgwhite":"\x1b[107m","bggray":"\x1b[100m",
+		"bgred":"\x1b[41m","bggreen":"\x1b[42m","bglgreen":"\x1b[102m","bgyellow":"\x1b[43m","bgblue":"\x1b[44m","bglblue":"\x1b[104m","bgcyan":"\x1b[106m",
+		"bgpink":"\x1b[105m","bgpurple":"\x1b[45m","hlwhite":"\x1b[7m","hlred":"\x1b[41m\x1b[30m","hlgreen":"\x1b[42m\x1b[30m","hlblue":"\x1b[44m\x1b[37m",
+		"hlcyan":"\x1b[104m\x1b[30m","hlyellow":"\x1b[43m\x1b[30m","hlpink":"\x1b[105m\x1b[30m","hlpurple":"\x1b[45m\x1b[37m"};
+
+
+
 //
 // DEPENDENCIES AND SETTINGS
 //
-const fs=require("fs"), request=require("request"), botConfig=require("./config/config.json"),
-	botLanguage=require("./lang/"+botConfig.language+".json"), botDefaultLanguage=require("./lang/default.json");
-var myDB="disabled", sqlite="disabled";
+const fs=require("fs"), request=require("request"), botConfig=require("./config/config.json"),botDefaultLanguage=require("./lang/default.json");
+var myDB="disabled", sqlite="disabled", botLanguage="";
+try{
+	botLanguage=require("./lang/"+botConfig.language+".json")
+}catch(err){
+	console.info(timeStamp()+" "+cc.hlred+" ERROR "+cc.reset+" Translation file: "+cc.purple+botConfig.language+".json"+cc.reset+" cannot be found | "+err.code);
+	console.info(timeStamp()+" "+cc.hlblue+" INFO "+cc.reset+" Using "+cc.purple+"default"+".json"+cc.reset+" (English) language... "+cc.red+"DO NOT"+cc.reset+" modify this file!")
+}
 if(botConfig.myDBserver){
 	if(botConfig.myDBserver.enabled==="yes"){
 		const mySQL=require("mysql");
@@ -59,14 +76,6 @@ for(const file of commands){
 }
 
 
-//
-// SHORTEN JSON DATA AND CONSOLE COLORS
-//
-const cc={"reset":"\x1b[0m","ul":"\x1b[4m","lred":"\x1b[91m","red":"\x1b[31m","lgreen":"\x1b[92m","green":"\x1b[32m","lyellow":"\x1b[93m","yellow":"\x1b[33m",
-		"lblue":"\x1b[94m","blue":"\x1b[34m","lcyan":"\x1b[96m","cyan":"\x1b[36m","pink":"\x1b[95m","purple":"\x1b[35m","bgwhite":"\x1b[107m","bggray":"\x1b[100m",
-		"bgred":"\x1b[41m","bggreen":"\x1b[42m","bglgreen":"\x1b[102m","bgyellow":"\x1b[43m","bgblue":"\x1b[44m","bglblue":"\x1b[104m","bgcyan":"\x1b[106m",
-		"bgpink":"\x1b[105m","bgpurple":"\x1b[45m","hlwhite":"\x1b[7m","hlred":"\x1b[41m\x1b[30m","hlgreen":"\x1b[42m\x1b[30m","hlblue":"\x1b[44m\x1b[37m",
-		"hlcyan":"\x1b[104m\x1b[30m","hlyellow":"\x1b[43m\x1b[30m","hlpink":"\x1b[105m\x1b[30m","hlpurple":"\x1b[45m\x1b[37m"};
 
 
 //
@@ -97,7 +106,7 @@ function timeStamp(type){
 // DATABASE TIMER FOR TEMPORARY ROLES
 //
 setInterval(function(){
-	let timeNow=new Date().getTime(),dbTime="",daysLeft="",logginChannel="",member="";
+	let timeNow=new Date().getTime(),dbTime="",daysLeft="",logginChannel="",member="",translation="yes";
 	if(myDB!=="disabled"){
 		myDB.query(`SELECT * FROM TempRole_bot.temporaryRoles;`,(error,results)=>{
 			if(error){console.info(timeStamp()+" "+cc.hlred+" ERROR "+cc.reset+" TemporaryRoles timer, could not "+cc.yellow+"SELECT FROM"+cc.cyan+" temporaryRoles"+cc.reset+" table\nRAW: "+error);}
@@ -126,16 +135,19 @@ setInterval(function(){
 											if(botLanguage.messageToMember){
 												if(botLanguage.messageToMember.reminder){
 													member.send(
-														botLanguage.messageToMember.replace("%member%","<@"+rows[rowNumber].userID+">")
+														botLanguage.messageToMember.reminder.replace("%member%","<@"+rows[rowNumber].userID+">")
 															.replace("%daysAmount%",rows[rowNumber].temporaryRole)
 															.replace("%daysAmount%",daysRemaining+dayORdays)
 															.replace("%botOwner%","<@"+botConfig.ownerID+">")
 													)
 													.catch(error=>console.info(timeStamp()+" "+cc.hlred+" ERROR "+cc.reset+" "+error.message+" | Member has disabled DMs, blocked me, or is no longer in server"))
 												}
+												else{translation="no"}
 											}
+											else{translation="no"}
 										}
-										else{
+										else{translation="no"}
+										if(translation==="no"){
 											member.send(
 												botDefaultLanguage.messageToMember.reminder.replace("%member%","<@"+rows[rowNumber].userID+">")
 													.replace("%roleName%",rows[rowNumber].temporaryRole)
@@ -151,9 +163,27 @@ setInterval(function(){
 						if(daysLeft<1){
 							let finalName=rows[rowNumber].userName, finalID=rows[rowNumber].userID;
 							if(botConfig.logChannelID){
-								bot.channels.get(botConfig.logChannelID)
-								.send(botLanguage.messageToMember.replace("%member%","<@"+rows[rowNumber].userID+">").replace("%roleName%",rows[rowNumber].temporaryRole))
-								.catch(error=>console.info(timeStamp()+" "+cc.hlred+" ERROR "+cc.reset+" TemporaryRoles timer, could not send message to channel | "+error.message));
+								if(botLanguage){
+									if(botLanguage.messageToChannel){
+										if(botLanguage.messageToChannel.roleLost){
+											bot.channels.get(botConfig.logChannelID).send(
+												botLanguage.messageToChannel.roleLost.replace("%member%","<@"+rows[rowNumber].userID+">")
+													.replace("%roleName%",rows[rowNumber].temporaryRole)
+											)
+											.catch(error=>console.info(timeStamp()+" "+cc.hlred+" ERROR "+cc.reset+" TemporaryRoles timer, could not send message to channel | "+error.message))
+										}
+										else{translation="no"}
+									}
+									else{translation="no"}
+								}
+								else{translation="no"}
+								if(translation==="no"){
+									bot.channels.get(botConfig.logChannelID).send(
+										botDefaultLanguage.messageToChannel.roleLost.replace("%member%","<@"+rows[rowNumber].userID+">")
+											.replace("%roleName%",rows[rowNumber].temporaryRole)
+									)
+									.catch(error=>console.info(timeStamp()+" "+cc.hlred+" ERROR "+cc.reset+" TemporaryRoles timer, could not send message to channel | "+error.message))
+								}
 							}
 							if(member==="notFound"){
 								console.info(
@@ -171,13 +201,29 @@ setInterval(function(){
 									);
 								}
 								else{
-									member.send(
-										botLanguage.messageToMember.replace("%member%","<@"+rows[rowNumber].userID+">")
-											.replace("%roleName%",rows[rowNumber].temporaryRole)
-											.replace("%botOwner%","<@"+botConfig.ownerID+">")
-									)
-									.catch(error=>console.info(timeStamp()+" "+cc.hlred+" ERROR "+cc.reset+" "+error.message+" | Member has disabled DMs, blocked me, or is no longer in server"));
-									
+									if(botLanguage){
+										if(botLanguage.messageToExecuter){
+											if(botLanguage.messageToExecuter.check){
+												member.send(
+													botLanguage.messageToMember.roleLost.replace("%member%","<@"+rows[rowNumber].userID+">")
+														.replace("%roleName%",rows[rowNumber].temporaryRole)
+														.replace("%botOwner%","<@"+botConfig.ownerID+">")
+												)
+												.catch(error=>console.info(timeStamp()+" "+cc.hlred+" ERROR "+cc.reset+" "+error.message+" | Member has disabled DMs, blocked me, or is no longer in server"))
+											}
+											else{translation="no"}
+										}
+										else{translation="no"}
+									}
+									else{translation="no"}
+									if(translation==="no"){
+										member.send(
+											botDefaultLanguage.messageToMember.roleLost.replace("%member%","<@"+rows[rowNumber].userID+">")
+												.replace("%roleName%",rows[rowNumber].temporaryRole)
+												.replace("%botOwner%","<@"+botConfig.ownerID+">")
+										)
+										.catch(error=>console.info(timeStamp()+" "+cc.hlred+" ERROR "+cc.reset+" "+error.message+" | Member has disabled DMs, blocked me, or is no longer in server"))
+									}
 									if(member.roles.has(roleToRemove.id)){
 										member.removeRole(roleToRemove)
 										.catch(error=>console.info(timeStamp()+" "+cc.hlred+" ERROR "+cc.reset+" TemporaryRoles timer, could not "+cc.yellow+"removeRole()"+cc.reset+" from member | "+error.message));
@@ -321,12 +367,12 @@ bot.on("ready", ()=>{
 	console.info(timeStamp()+" -- DISCORD TEMP-ROLE[BOT]: "+cc.yellow+bot.user.username+cc.reset+", IS "+cc.green+"READY"+cc.reset+"! --");
 
 	// VERSION CHECKER
-	request("https://raw.githubusercontent.com/JennerPalacios/disc_tempRole/master/version.txt",(error,response,body)=>{
+	request("https://raw.githubusercontent.com/JennerPalacios/disc_tempRole/main/version.txt",(error,response,body)=>{
 		if(error){
 			console.info(timeStamp()+" "+cc.hlred+"ERROR "+cc.reset+" Could not load version from gitHub | "+error);
 		}
 		if(body){
-			let gitHubVer=body.slice(0,-1); let timeLog=timeStamp();
+			let gitHubVer=body; let timeLog=timeStamp(); //.slice(0,-1)
 			let verChecker=cc.green+"up-to-date"+cc.reset; if(gitHubVer!==botConfig.botVersion){ verChecker=cc.hlred+" OUTDATED! "+cc.reset }
 			console.info(
 				timeLog+" GitHub Discord Bot [TempRole]: "+cc.yellow+"v"+gitHubVer+cc.reset+"\n"
@@ -411,9 +457,8 @@ bot.on("message",message=>{
 	//
 	// COMMAND LISTENER
 	//
-	if(!message.content.startsWith(botConfig.cmdPrefix)){
-		return console.info(timeStamp()+" "+cc.purple+"#"+channel.name+cc.reset+" | "+cc.lblue+member.user.username+cc.reset+": "+message.content);
-	}
+	if(!message.content.startsWith(botConfig.cmdPrefix)){return}
+	else{console.info(timeStamp()+" "+cc.purple+"#"+channel.name+cc.reset+" | "+cc.hlblue+" COMMAND "+cc.reset+" "+cc.lblue+member.user.username+cc.reset+": "+message.content)}
 
 	// RELOAD COMMAND - OWNER ONLY
 	if(command==="reload" && member.id===botConfig.ownerID){
@@ -437,7 +482,6 @@ bot.on("message",message=>{
 	
 	// DYNAMIC COMMAND HANDLER
 	if(bot.commands.has(command) || bot.commands.find(cmd=>cmd.aliases && cmd.aliases.includes(command))){
-		console.info(timeStamp()+" "+cc.purple+"#"+channel.name+cc.reset+" | "+cc.hlblue+" COMMAND "+cc.reset+" "+cc.lblue+member.user.username+cc.reset+": "+message.content);
 		try{
 			const COMMAND=bot.commands.get(command) || bot.commands.find(cmd=>cmd.aliases && cmd.aliases.includes(command));
 			COMMAND.execute(
