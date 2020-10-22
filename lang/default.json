@@ -5,7 +5,7 @@
 		"rolesFoundTitle": "✅ %mentions%'s TemporaryRole(s):\n",
 		"rolesFoundList": "**%roleName%**, ends: `%endDate%`, addedBy: `%addedBy%`, on: `%addedDate%`\n",
 		"roleRemoveNotMention": "⛔ %member%, you forgot to include what role to **remove** from %mentions%...",
-		"roleMemberNotInDB": "⛔ %mentions% with role: `%roleName%` is __NOT__ in my `DataBase`, %member%",
+		"roleMemberNotInDB": "⛔ %mentions% with role: `%roleName%` is __NOT__ in my `Database`, %member%",
 		"daysNotMention": "⛔ %member%, you forgot to include how **many** days do you want %mentions% to have this role...",
 		"roleAddNotMention": "⛔ %member%, you forgot to include what __role__ to **temporary** assign to %mentions%...",
 		"roleNotFoundInServer": "⛔ I couldn't find such role in the server, %member%! Please try searching for it first!"
@@ -17,7 +17,7 @@
 	},
 	"messageToChannel": {
 		"roleLost": "⚠ %member% have **lost** their role: **%roleName%** - their **temporary** access has __EXPIRED__ 😭",
-		"roleRemoved": "⚠ %mentions% have **lost** their role: **%roleName%** and has been removed from my `DataBase`, %member%",
+		"roleRemoved": "⚠ %mentions% have **lost** their role: **%roleName%** and has been removed from my `Database`, %member%",
 		"roleExtended": "🎉 %mentions%'s **temporary** role: **%roleName%** has been extended by **%days%** more days. They will lose this role on: `%endDate%`",
 		"roleAssigned": "🎉 %mentions% has been given a **temporary** role: **%roleName%**, enjoy! They will lose this role on: `%endDate%`"
 	}

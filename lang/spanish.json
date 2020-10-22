@@ -1,0 +1,24 @@
+{
+	"messageToExecuter": {
+		"memberNotMention": "⚠ Se te olvidó `@mencionar` la persona a quién comprobar, añadir, or remover rol... %member%",
+		"noRolesFound": "⚠ %mentions% **NO** tiene ningún `rol temporal`, %member%",
+		"rolesFoundTitle": "✅ Roles Temporales de %mentions%:\n",
+		"rolesFoundList": "**%roleName%**, termina: `%endDate%`, añadidoPor: %addedBy%, el: `%addedDate%`\n",
+		"roleRemoveNotMention": "⛔ %member%, se te olvidó incluir que rol **quitarle** a %mentions%...",
+		"roleMemberNotInDB": "⛔ %mentions% con el rol: `%roleName%` __NO__ está en mi `BaseDeDatos`, %member%",
+		"daysNotMention": "⛔ %member%, se te olvidó incluir **cuantos** días %mentions% va a tener este rol...",
+		"roleAddNotMention": "⛔ %member%, se te olvidó incluir que __rol__ va a ser **temporalmente** asignado a %mentions%...",
+		"roleNotFoundInServer": "⛔ No pude encontrar ese rol en el servidor, %member%! Por favor, primero confirma que existe!"
+		
+	},
+	"messageToMember": {
+		"reminder": "⚠ %member%, tu vas a **perder** tu rol: **%roleName%** en `%daysAmount% días`. Por favor, contacta a %serverOwner% si deseas renovar tu acceso a este **rol temporal**.",
+		"roleLost": "⚠ %member%, haz **perdido** tu rol: **%roleName%** - tu acceso **temporal** ha __CADUCADO__ 😭 \nPor favor, contacta a %serverOwner% si deseas renovar tu acceso a este **rol temporal**."
+	},
+	"messageToChannel": {
+		"roleLost": "⚠ %member% ha **perdido** su rol: **%roleName%** - su acceso **temporal** ha __CADUCADO__ 😭",
+		"roleRemoved": "⚠ %mentions% ha **perdido** su rol: **%roleName%** y fué eliminado de mi `BaseDeDatos`, %member%",
+		"roleExtended": "🎉 A %mentions% se le ha extendido por **%days%** días el acceso **temporal** del rol: **%roleName%**. Él/Ella perderá este rol el: `%endDate%`",
+		"roleAssigned": "🎉 %mentions% ha recibido acceso **temporal** al rol: **%roleName%**, disfrutalo! Él/Ella perderá este rol el: `%endDate%`"
+	}
+}
