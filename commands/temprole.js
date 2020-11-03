@@ -513,6 +513,7 @@ module.exports={
 													botLanguage.messageToChannel.roleAssigned.replace("%mentions%",mentionMember)
 														.replace("%roleName%",roleSearched)
 														.replace("%endDate%",finalDateDisplay)
+													        .replace("%days%",args[1])
 												)
 												.catch(err=>console.info(timeStamp+" "+cc.hlred+" ERROR "+cc.reset+" "+err.message))
 											}
@@ -526,6 +527,7 @@ module.exports={
 											botDefaultLanguage.messageToChannel.roleAssigned.replace("%mentions%",mentionMember)
 												.replace("%roleName%",roleSearched)
 												.replace("%endDate%",finalDateDisplay)
+											        .replace("%days%",args[1])
 										)
 										.catch(err=>console.info(timeStamp+" "+cc.hlred+" ERROR "+cc.reset+" "+err.message))
 									}
